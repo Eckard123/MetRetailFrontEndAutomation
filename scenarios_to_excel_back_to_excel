@@ -37,10 +37,11 @@ def scenario_dob(date, ageofperson):
 
 
 def cameleon(value1, value2, workbook):
-    if value1.__eq__(value2):
-        my_green = openpyxl.styles.colors.Color(rgb='00FF00')
-        my_green_fill = openpyxl.styles.fills.PatternFill(patternType='solid', fgColor=my_green)
 
+    my_green = openpyxl.styles.colors.Color(rgb='00FF00')
+    my_green_fill = openpyxl.styles.fills.PatternFill(patternType='solid', fgColor=my_green)
+
+    if value1.__eq__(value2):
         my_workbook = workbook #openpyxl.load_workbook(workbook)
         my_cell = my_workbook.active
         my_cell.cell(row=x, column=1).fill = my_green_fill
