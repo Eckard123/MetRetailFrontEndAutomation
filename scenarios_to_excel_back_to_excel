@@ -7,7 +7,7 @@ from openpyxl.styles import Color, Fill
 from openpyxl.cell import Cell
 from openpyxl.styles.colors import GREEN
 
-scenario_source = "C:\\Projects\\Internal testing\\riskinternaltesting\\RiskInternalTesting-WEB\\src\\test\\resources\\Debug.xlsx"
+scenario_source = "C:\\Projects\\Internal testing\\riskinternaltesting\\RiskInternalTesting-WEB\\src\\test\\resources\\7005135.xlsx"
 new_tool = "C:\\Users\\EcBerry\\Desktop\\Myriad info\\Metropolitain\\VP\\Peter & Danelle pricing tools\\pk Alteration tool (20190301 onward).xlsb"
 old_tool = "C:\\Users\\EcBerry\\Desktop\\Myriad info\\Metropolitain\\VP\\Peter & Danelle pricing tools\\pk Alteration tool.xlsb"
 
@@ -36,15 +36,14 @@ def scenario_dob(date, ageofperson):
     return scenario_dob
 
 
-#def cameleon(value1, value2, workbook):
-#    Offset = 18
-#    for off in (1, 5):
-#        if value1 == value2:
-#            workbook.cell(rowx=x-1, colx=Offset*off).__format__(format_spec=Color.rgb(GREEN))
-#            print("Good job, they match")
+def cameleon(value1, value2, workbook):
+    if value1.__eq__(value2):
+        my_green = openpyxl.styles.colors.Color(rgb='00FF00')
+        my_green_fill = openpyxl.styles.fills.PatternFill(patternType='solid', fgColor=my_green)
 
-            #_cell = openpyxl_utilities.Cell(worksheet="Sheet1", row=x-1, column=Offset*off)
-
+        my_workbook = workbook #openpyxl.load_workbook(workbook)
+        my_cell = my_workbook.active
+        my_cell.cell(row=x, column=1).fill = my_green_fill
 
 
 class input:
@@ -60,7 +59,6 @@ class input:
     growth_Percentage = None
     package_code = None
     scheme_code = None
-
 
 class output:
 
@@ -179,33 +177,39 @@ class output:
     LapseRiskOnExpAfterVP_Fourth = None
 
 
+
+# Creating object to read scenario lines
+scenario_workbook = openpyxl.load_workbook(scenario_source)
+scenario_cell = scenario_workbook.active
+
+
 # Opening the pricing tool
 tool_workbook = xlwings.Book(new_tool).sheets(3)
 # Object to manipulate the pricing tool's calculations
 xl_calc = xlwings.Book(new_tool)
 # Object to write values to the scenario_source workbook
 xl_write = xlwings.Book(scenario_source).sheets(1)
-# Reading scenario lines
-scenario_workbook = xlrd.open_workbook(scenario_source).sheet_by_index(0)
+
+
 
 
 
 for x in range(7, 9):
 
     # Setting the workbook's calculation option to manual saves time
-    xl_calc.app.calculation = 'manual'
+    #xl_calc.app.calculation = 'manual'
     print("Scenario: ", x)
 
     # Reading the scenario and assigning input variables their values
-    input.table_code_1 = scenario_workbook.cell(rowx=x-1, colx=14).value
-    input.table_code_2 = scenario_workbook.cell(rowx=x-1, colx=52).value
-    input.table_code_3 = scenario_workbook.cell(rowx=x-1, colx=90).value
-    input.table_code_4 = scenario_workbook.cell(rowx=x-1, colx=128).value
-    input.age = scenario_workbook.cell(rowx=x-1, colx=167).value
+    input.table_code_1 = scenario_cell.cell(row=x, column=15).value
+    input.table_code_2 = scenario_cell.cell(row=x, column=53).value
+    input.table_code_3 = scenario_cell.cell(row=x, column=91).value
+    input.table_code_4 = scenario_cell.cell(row=x, column=129).value
+    input.age = scenario_cell.cell(row=x, column=168).value
     input.dob = scenario_dob(Todays_date, input.age)
-    input.sum_assured = scenario_workbook.cell(rowx=x-1, colx=31).value
-    input.growth_Percentage = scenario_workbook.cell(rowx=x-1, colx=21).value
-    input.package_code = str(scenario_workbook.cell(rowx=x-1, colx=26).value)
+    input.sum_assured = scenario_cell.cell(row=x, column=32).value
+    input.growth_Percentage = scenario_cell.cell(row=x, column=22).value
+    input.package_code = str(scenario_cell.cell(row=x, column=27).value)
 
     # converting in order to copy to pricing tool
     if input.table_code_1 == "MFMM":
@@ -224,47 +228,47 @@ for x in range(7, 9):
         input.table_code_1 = "Extended Family"
 
     # Package codes and scheme codes
-    if input.package_code == "801.0":
+    if input.package_code == "801":
         input.scheme_code = "7005285"
-    elif input.package_code == "802.0":
+    elif input.package_code == "802":
         input.scheme_code = "7005678"
-    elif input.package_code == "803.0":
+    elif input.package_code == "803":
         input.scheme_code = "7005469"
-    elif input.package_code == "804.0":
+    elif input.package_code == "804":
         input.scheme_code = "7005671"
-    elif input.package_code == "805.0":
+    elif input.package_code == "805":
         input.scheme_code = "7005674"
-    elif input.package_code == "806.0":
+    elif input.package_code == "806":
         input.scheme_code = "7005653"
-    elif input.package_code == "807.0":
+    elif input.package_code == "807":
         input.scheme_code = "7005529"
-    elif input.package_code == "808.0":
+    elif input.package_code == "808":
         input.scheme_code = "7005476"
-    elif input.package_code == "809.0":
+    elif input.package_code == "809":
         input.scheme_code = "7005135"
-    elif input.package_code == "810.0":
+    elif input.package_code == "810":
         input.scheme_code = "7005575"
-    elif input.package_code == "811.0":
+    elif input.package_code == "811":
         input.scheme_code = "7005575"
-    elif input.package_code == "812.0":
+    elif input.package_code == "812":
         input.scheme_code = "7005228"
-    elif input.package_code == "813.0":
+    elif input.package_code == "813":
         input.scheme_code = "7005828"
-    elif input.package_code == "814.0":
+    elif input.package_code == "814":
         input.scheme_code = "7005579"
-    elif input.package_code == "815.0":
+    elif input.package_code == "815":
         input.scheme_code = "7005234"
-    elif input.package_code == "816.0":
+    elif input.package_code == "816":
         input.scheme_code = "7005597"
-    elif input.package_code == "817.0":
+    elif input.package_code == "817":
         input.scheme_code = "7005226"
-    elif input.package_code == "818.0":
+    elif input.package_code == "818":
         input.scheme_code = "7001298"
-    elif input.package_code == "819.0":
+    elif input.package_code == "819":
         input.scheme_code = "7005227"
-    elif input.package_code == "820.0":
+    elif input.package_code == "820":
         input.scheme_code = "7005876"
-    elif input.package_code == "841.0":
+    elif input.package_code == "841":
         input.scheme_code = "7005531"
 
 
@@ -349,7 +353,8 @@ for x in range(7, 9):
                                           output.DisribChannelSalesBeforeVP_Main+output.InterAWSaleBeforeVP_Main+output.InterUFSaleBeforeVP_Main+
                                           output.InterUFLapseBeforeVP_Main+output.LapseRiskOnExpBeforeVP_Main)
 
- #   cameleon(output.main_tot_elements_before_VP, output.main_tot_before_VP, scenario_workbook)
+    #cameleon(output.main_tot_elements_before_VP, output.main_tot_before_VP, scenario_workbook)
+    cameleon(10, 10, scenario_workbook)
 
     # Elements for the second benefit before VP
     if input.table_code_2 == "PUDT":
@@ -1076,4 +1081,4 @@ for x in range(7, 9):
 
 xl_write.book.save()
 tool_workbook.book.close()
-xl_write.book.close()
+#xl_write.book.close()
