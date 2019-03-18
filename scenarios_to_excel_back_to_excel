@@ -10,7 +10,7 @@ from openpyxl.styles.colors import GREEN
 scenario_source = "C:\\Projects\\Internal testing\\riskinternaltesting\\RiskInternalTesting-WEB\\src\\test\\resources\\7005135.xlsx"
 new_tool = "C:\\Users\\EcBerry\\Desktop\\Myriad info\\Metropolitain\\VP\\Peter & Danelle pricing tools\\pk Alteration tool (20190301 onward).xlsb"
 old_tool = "C:\\Users\\EcBerry\\Desktop\\Myriad info\\Metropolitain\\VP\\Peter & Danelle pricing tools\\pk Alteration tool.xlsb"
-
+output_file = "C:\\Users\\EcBerry\\Desktop\\book1.xlsx"
 
 Todays_date = datetime.date.today()
 
@@ -36,15 +36,20 @@ def scenario_dob(date, ageofperson):
     return scenario_dob
 
 
-def cameleon(value1, value2, workbook):
+def match(value1, value2, workbook):
+    def cameleon(value1, value2, workbook):
+        my_green = openpyxl.styles.colors.Color(rgb='00FF00')
+        my_red = openpyxl.styles.colors.Color(rgb='FF0000')
+        my_red_fill = openpyxl.styles.fills.PatternFill(patternType='solid', fgColor=my_red)
+        my_green_fill = openpyxl.styles.fills.PatternFill(patternType='solid', fgColor=my_green)
+        my_workbook = scenario_workbook.active
+        if value1.__eq__(value2):
+            my_workbook.cell(row=x, column=33).fill = my_green_fill
+            scenario_workbook.save(output_file)
+        else:
+            my_workbook.cell(row=x, column=33).fill = my_red_fill
+            scenario_workbook.save(output_file)
 
-    my_green = openpyxl.styles.colors.Color(rgb='00FF00')
-    my_green_fill = openpyxl.styles.fills.PatternFill(patternType='solid', fgColor=my_green)
-
-    if value1.__eq__(value2):
-        my_workbook = workbook #openpyxl.load_workbook(workbook)
-        my_cell = my_workbook.active
-        my_cell.cell(row=x, column=1).fill = my_green_fill
 
 
 class input:
@@ -182,16 +187,12 @@ class output:
 # Creating object to read scenario lines
 scenario_workbook = openpyxl.load_workbook(scenario_source)
 scenario_cell = scenario_workbook.active
-
-
 # Opening the pricing tool
 tool_workbook = xlwings.Book(new_tool).sheets(3)
 # Object to manipulate the pricing tool's calculations
 xl_calc = xlwings.Book(new_tool)
 # Object to write values to the scenario_source workbook
 xl_write = xlwings.Book(scenario_source).sheets(1)
-
-
 
 
 
@@ -354,8 +355,9 @@ for x in range(7, 9):
                                           output.DisribChannelSalesBeforeVP_Main+output.InterAWSaleBeforeVP_Main+output.InterUFSaleBeforeVP_Main+
                                           output.InterUFLapseBeforeVP_Main+output.LapseRiskOnExpBeforeVP_Main)
 
-    #cameleon(output.main_tot_elements_before_VP, output.main_tot_before_VP, scenario_workbook)
-    cameleon(10, 10, scenario_workbook)
+    # Checking if main benefit premium equals sum of elements for main benefit premium before VP
+    cameleon(output.main_tot_elements_before_VP, output.main_tot_before_VP, scenario_workbook)
+
 
     # Elements for the second benefit before VP
     if input.table_code_2 == "PUDT":
@@ -375,6 +377,8 @@ for x in range(7, 9):
                                                 output.renewalFixedPFeeBeforeVP_Second+output.claimsExpPremiumBeforeVP_Second+output.renewalVariPFeeBeforeVP_Second+
                                                 output.DisribChannelSalesBeforeVP_Second+output.InterAWSaleBeforeVP_Second+output.InterUFSaleBeforeVP_Second+
                                                 output.InterUFLapseBeforeVP_Second+output.LapseRiskOnExpBeforeVP_Second)
+
+        @cameleon(output.second_tot_before_VP, output.pudt_tot_elements_before_VP,scenario_workbook)
 
     # Elements for the second benefit before VP
     elif input.table_code_2 == "PUDS":
@@ -1082,4 +1086,4 @@ for x in range(7, 9):
 
 xl_write.book.save()
 tool_workbook.book.close()
-#xl_write.book.close()
+xl_write.book.close()
