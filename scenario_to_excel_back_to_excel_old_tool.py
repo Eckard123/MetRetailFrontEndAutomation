@@ -7,7 +7,7 @@ from openpyxl.styles import Color, Fill
 from openpyxl.cell import Cell
 from openpyxl.styles.colors import GREEN
 
-scenario_source = "C:\\Projects\\Internal testing\\riskinternaltesting\\RiskInternalTesting-WEB\\src\\test\\resources\\7005135.xlsx"
+scenario_source = "C:\\Users\\EcBerry\\Desktop\\7005135.xlsx"
 old_tool = "C:\\Users\\EcBerry\\Desktop\\Myriad info\\Metropolitain\\VP\\Peter & Danelle pricing tools\\pk Alteration tool.xlsb"
 
 
@@ -15,13 +15,11 @@ Todays_date = datetime.date.today()
 
 def the_date_maker(SomeFunction):
     def newbuss_date(SomeDate):
-        #print("In newbuss_date now")
         newbuss_year = int(SomeDate.year - 1)
         start_date = SomeDate.replace(day=1, month=1, year=newbuss_year)
         return start_date.strftime("%Y/%m/%d")
 
     def create_dob(currentdate, excel_age):
-        #print("In create_dob now")
         dob_year = currentdate.year
         new_year = int(dob_year - excel_age)
         created_dob = currentdate.replace(day=1, month=1, year=new_year)
@@ -33,21 +31,6 @@ def the_date_maker(SomeFunction):
 @the_date_maker
 def scenario_dob(date, ageofperson):
     return scenario_dob
-
-
-#def match(value1, value2, workbook):
-#    def cameleon(value1, value2, workbook):
-#        my_green = openpyxl.styles.colors.Color(rgb='00FF00')
-#        my_red = openpyxl.styles.colors.Color(rgb='FF0000')
-#        my_red_fill = openpyxl.styles.fills.PatternFill(patternType='solid', fgColor=my_red)
-#        my_green_fill = openpyxl.styles.fills.PatternFill(patternType='solid', fgColor=my_green)
-#        my_workbook = scenario_workbook.active
-#        if value1.__eq__(value2):
-#            my_workbook.cell(row=x, column=33).fill = my_green_fill
-#            scenario_workbook.save(output_file)
-#        else:
-#            my_workbook.cell(row=x, column=33).fill = my_red_fill
-#            scenario_workbook.save(output_file)
 
 
 
@@ -198,7 +181,7 @@ xl_write = xlwings.Book(scenario_source).sheets(1)
 for x in range(7, 8):
 
     # Setting the workbook's calculation option to manual saves time
-    #xl_calc.app.calculation = 'manual'
+    xl_calc.app.calculation = 'manual'
     print("Scenario: ", x)
 
     # Reading the scenario and assigning input variables their values
@@ -354,8 +337,6 @@ for x in range(7, 8):
                                           output.DisribChannelSalesBeforeVP_Main+output.InterAWSaleBeforeVP_Main+output.InterUFSaleBeforeVP_Main+
                                           output.InterUFLapseBeforeVP_Main+output.LapseRiskOnExpBeforeVP_Main)
 
-    # Checking if main benefit premium equals sum of elements for main benefit premium before VP
-    #cameleon(output.main_tot_elements_before_VP, output.main_tot_before_VP, scenario_workbook)
 
 
     # Elements for the second benefit before VP
@@ -377,7 +358,6 @@ for x in range(7, 8):
                                                 output.DisribChannelSalesBeforeVP_Second+output.InterAWSaleBeforeVP_Second+output.InterUFSaleBeforeVP_Second+
                                                 output.InterUFLapseBeforeVP_Second+output.LapseRiskOnExpBeforeVP_Second)
 
-        #@cameleon(output.second_tot_before_VP, output.pudt_tot_elements_before_VP,scenario_workbook)
 
     # Elements for the second benefit before VP
     elif input.table_code_2 == "PUDS":
