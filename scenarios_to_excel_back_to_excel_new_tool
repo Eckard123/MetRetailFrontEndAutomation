@@ -9,8 +9,6 @@ from openpyxl.styles.colors import GREEN
 
 scenario_source = "C:\\Projects\\Internal testing\\riskinternaltesting\\RiskInternalTesting-WEB\\src\\test\\resources\\7005135.xlsx"
 new_tool = "C:\\Users\\EcBerry\\Desktop\\Myriad info\\Metropolitain\\VP\\Peter & Danelle pricing tools\\pk Alteration tool (20190301 onward).xlsb"
-old_tool = "C:\\Users\\EcBerry\\Desktop\\Myriad info\\Metropolitain\\VP\\Peter & Danelle pricing tools\\pk Alteration tool.xlsb"
-output_file = "C:\\Users\\EcBerry\\Desktop\\book1.xlsx"
 
 Todays_date = datetime.date.today()
 
@@ -36,19 +34,19 @@ def scenario_dob(date, ageofperson):
     return scenario_dob
 
 
-def match(value1, value2, workbook):
-    def cameleon(value1, value2, workbook):
-        my_green = openpyxl.styles.colors.Color(rgb='00FF00')
-        my_red = openpyxl.styles.colors.Color(rgb='FF0000')
-        my_red_fill = openpyxl.styles.fills.PatternFill(patternType='solid', fgColor=my_red)
-        my_green_fill = openpyxl.styles.fills.PatternFill(patternType='solid', fgColor=my_green)
-        my_workbook = scenario_workbook.active
-        if value1.__eq__(value2):
-            my_workbook.cell(row=x, column=33).fill = my_green_fill
-            scenario_workbook.save(output_file)
-        else:
-            my_workbook.cell(row=x, column=33).fill = my_red_fill
-            scenario_workbook.save(output_file)
+#def match(value1, value2, workbook):
+#    def cameleon(value1, value2, workbook):
+#        my_green = openpyxl.styles.colors.Color(rgb='00FF00')
+#        my_red = openpyxl.styles.colors.Color(rgb='FF0000')
+#        my_red_fill = openpyxl.styles.fills.PatternFill(patternType='solid', fgColor=my_red)
+#        my_green_fill = openpyxl.styles.fills.PatternFill(patternType='solid', fgColor=my_green)
+#        my_workbook = scenario_workbook.active
+#        if value1.__eq__(value2):
+#            my_workbook.cell(row=x, column=33).fill = my_green_fill
+#            scenario_workbook.save(output_file)
+#        else:
+#            my_workbook.cell(row=x, column=33).fill = my_red_fill
+#            scenario_workbook.save(output_file)
 
 
 
@@ -196,7 +194,7 @@ xl_write = xlwings.Book(scenario_source).sheets(1)
 
 
 
-for x in range(7, 9):
+for x in range(106, 107):
 
     # Setting the workbook's calculation option to manual saves time
     #xl_calc.app.calculation = 'manual'
@@ -356,7 +354,7 @@ for x in range(7, 9):
                                           output.InterUFLapseBeforeVP_Main+output.LapseRiskOnExpBeforeVP_Main)
 
     # Checking if main benefit premium equals sum of elements for main benefit premium before VP
-    cameleon(output.main_tot_elements_before_VP, output.main_tot_before_VP, scenario_workbook)
+    #cameleon(output.main_tot_elements_before_VP, output.main_tot_before_VP, scenario_workbook)
 
 
     # Elements for the second benefit before VP
@@ -378,7 +376,7 @@ for x in range(7, 9):
                                                 output.DisribChannelSalesBeforeVP_Second+output.InterAWSaleBeforeVP_Second+output.InterUFSaleBeforeVP_Second+
                                                 output.InterUFLapseBeforeVP_Second+output.LapseRiskOnExpBeforeVP_Second)
 
-        @cameleon(output.second_tot_before_VP, output.pudt_tot_elements_before_VP,scenario_workbook)
+        #@cameleon(output.second_tot_before_VP, output.pudt_tot_elements_before_VP,scenario_workbook)
 
     # Elements for the second benefit before VP
     elif input.table_code_2 == "PUDS":
