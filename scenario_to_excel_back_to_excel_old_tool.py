@@ -178,7 +178,7 @@ xl_write = xlwings.Book(scenario_source).sheets(1)
 
 
 
-for x in range(7, 8):
+for x in range(8, 107):
 
     # Setting the workbook's calculation option to manual saves time
     xl_calc.app.calculation = 'manual'
