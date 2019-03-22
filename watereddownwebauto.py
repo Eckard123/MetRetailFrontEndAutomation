@@ -128,9 +128,9 @@ for x in range(i, j):
             IE.quit()
 
     try:
-        WebDriverWait(IE,20).until(EC.url_contains("https://retail-dev.metropolitan.co.za/mmih-cdi-maintain-client/client-details/personal-details"))
+        WebDriverWait(IE, 20).until(EC.url_contains("https://retail-dev.metropolitan.co.za/mmih-cdi-maintain-client/client-details/personal-details"))
 
-        WebDriverWait(IE,20).until(EC.visibility_of_element_located((By.XPATH,'//*[@id="firstName"]')))
+        WebDriverWait(IE, 20).until(EC.visibility_of_element_located((By.XPATH,'//*[@id="firstName"]')))
         firstname = IE.find_element_by_xpath('//*[@id="firstName"]')
         workbook = xlrd.open_workbook(excelfile_source).sheet_by_name("Scenarios").cell_value(rowx=i, colx=1)
         firstname.send_keys(workbook)
@@ -173,9 +173,9 @@ for x in range(i, j):
         IE.quit()
 
     # In order to add the client once all details have been entered
-    add_wait = WebDriverWait(IE,10).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[2]/div[2]/md-content/section/div/div/section/form/div/div[14]/button[1]')))
+    add_wait = WebDriverWait(IE, 10).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[2]/div[2]/md-content/section/div/div/section/form/div/div[14]/button[1]')))
     add = IE.find_element_by_xpath('/html/body/div[2]/div[2]/md-content/section/div/div/section/form/div/div[14]/button[1]')
-    IE.execute_script("arguments[0].click();",add)
+    IE.execute_script("arguments[0].click();", add)
     time.sleep(2)
 
     # click small round close button
@@ -201,7 +201,7 @@ for x in range(i, j):
         for funeral in funerals:
             if funeral.get_attribute('id') == "benefit_3_1":
                 funeral.click()
-    result = funeral_function() # This is the actual call of the function 'funeral_function' within the function itself.
+    result = funeral_function()
 
     # click the plan button on the right to add details
     WebDriverWait(IE, 60).until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[2]/div[2]/section[2]/div/div[3]/div[2]/life-goals/div[1]/div/div/div[4]/div/div[2]/button[1]')))
@@ -215,10 +215,10 @@ for x in range(i, j):
         okcontinue.click()
 
     except(selenium.common.exceptions.TimeoutException):
-        print("Proceeding...")
+        print()
 
     # Setting workbook options for first benefit
-    WebDriverWait(IE,60).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[3]/div/div/div/div[3]/div[2]/div[1]/table/tbody/tr/td[1]/div[2]/div/a')))
+    WebDriverWait(IE, 60).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[3]/div/div/div/div[3]/div[2]/div[1]/table/tbody/tr/td[1]/div[2]/div/a')))
     benefit_1_option = xlrd.open_workbook(excelfile_source).sheet_by_name("AS400").cell_value(rowx=i, colx=14) # This is the actual option, i.e. MFPA or MFMM etc.
     benefit_one_sum_assured = str(xlrd.open_workbook(excelfile_source).sheet_by_name('AS400').cell_value(rowx=i,colx=31)) # The actual sum assured value
     new_benefit_1_sum_assured = change_string(benefit_one_sum_assured)
@@ -358,13 +358,13 @@ for x in range(i, j):
     time.sleep(1)
 
     # click the 'next' button
-    WebDriverWait(IE,10).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[3]/div/footer/div/div/div[4]/div/button/div/div')))
+    WebDriverWait(IE, 10).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[3]/div/footer/div/div/div[4]/div/button/div/div')))
     next = IE.find_element_by_xpath('/html/body/div[3]/div/footer/div/div/div[4]/div/button/div/div')
     next.click()
 
     # clicking on draw up a budget and filling in details
     try:
-        WebDriverWait(IE,20).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[3]/div/div/div/div/div[2]/div[2]/div/div/div[2]/div/div[2]/button/div')))
+        WebDriverWait(IE, 20).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[3]/div/div/div/div/div[2]/div[2]/div/div/div[2]/div/div[2]/button/div')))
         budget = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[2]/div[2]/div/div/div[2]/div/div[2]/button/div')
         budget.click()
         time.sleep(1)
@@ -449,6 +449,7 @@ for x in range(i, j):
                 find_scheme_button = IE.find_element_by_css_selector("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div > div.modal-body > form > div > button")
                 IE.execute_script("document.querySelector('body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div > div.modal-body > form > div > button').click();")
                 time.sleep(1)
+
             except(selenium.common.exceptions.NoSuchElementException, selenium.common.exceptions.TimeoutException):
                 print("Could not locate element, please proceed manually")
 
@@ -544,10 +545,7 @@ for x in range(i, j):
 
     # Setting benefit_1's DOB, Need, planned for need
     if benefit_1_indicator:
-        print("benefit 1 indicator true.")
         if benefit_1_MFMM_indicator:
-            print("The first benefit selected was: " + benefit_1_option)
-            print()
             webelement_DOB = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[5]/div[2]/insured-lives/div/div[2]/div/form/div/div[1]/div[1]/div[2]/div/date-selector/div/div/input')
             webelement_DOB.clear()
             webelement_DOB.send_keys(First_benefit_DOB)
@@ -563,8 +561,6 @@ for x in range(i, j):
                     option_menus.click()
 
         if benefit_1_MFEF_indicator:
-            print("The first benefit selected was: " + benefit_1_option)
-            print()
             webelement_DOB = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[13]/div[2]/insured-lives/div/div[2]/div/form/div/div[1]/div[1]/div[2]/div/date-selector/div/div/input')
             webelement_DOB.clear()
             webelement_DOB.send_keys(First_benefit_DOB)
@@ -574,15 +570,12 @@ for x in range(i, j):
             time.sleep(1)
             drop_menu = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[13]/div[2]/insured-lives/div/div[2]/div/form/div/div[2]/div[2]/div/div/div[2]/button')
             drop_menu.click()
-            print("Benefit one sum assured added")
             option_menu = IE.find_elements_by_tag_name('a')
             for option_menus in option_menu:
                 if str(option_menus.text) == new_benefit_1_sum_assured:
                     option_menus.click()
 
         if benefit_1_MFPA_indicator:
-            print("The first benefit selected was: " + benefit_1_option)
-            print()
             webelement_DOB = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[11]/div[2]/insured-lives/div/div[2]/div/form/div/div[1]/div[1]/div[2]/div/date-selector/div/div/input')
             webelement_DOB.clear()
             webelement_DOB.send_keys(First_benefit_DOB)
@@ -592,15 +585,12 @@ for x in range(i, j):
             time.sleep(1)
             drop_menu = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[11]/div[2]/insured-lives/div/div[2]/div/form/div/div[2]/div[2]/div/div/div[2]/button')
             drop_menu.click()
-            print("Benefit one sum assured added")
             option_menu = IE.find_elements_by_tag_name('a')
             for option_menus in option_menu:
                 if str(option_menus.text) == new_benefit_1_sum_assured:
                     option_menus.click()
 
         if benefit_1_MFSP_indicator:
-            print("The first benefit selected was: " + benefit_1_option)
-            print()
             webelement_DOB = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[7]/div[2]/insured-lives/div/div[2]/div/form/div/div[1]/div[1]/div[2]/div/date-selector/div/div/input')
             webelement_DOB.clear()
             webelement_DOB.send_keys(First_benefit_DOB)
@@ -610,15 +600,12 @@ for x in range(i, j):
             time.sleep(1)
             drop_menu = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[7]/div[2]/insured-lives/div/div[2]/div/form/div/div[2]/div[2]/div/div/div[2]/button')
             drop_menu.click()
-            print("Benefit one sum assured added")
             option_menu = IE.find_elements_by_tag_name('a')
             for option_menus in option_menu:
                 if str(option_menus.text) == new_benefit_1_sum_assured:
                     option_menus.click()
 
         if benefit_1_MFUC_indicator:
-            print("The first benefit selected was: " + benefit_1_option)
-            print()
             webelement_DOB = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[9]/div[2]/insured-lives/div/div[2]/div/div[1]/div/form/div[1]/div[2]/div/date-selector/div/div/input')
             webelement_DOB.clear()
             webelement_DOB.send_keys(First_benefit_DOB)
@@ -628,7 +615,6 @@ for x in range(i, j):
             time.sleep(1)
             drop_menu = IE.find_element_by_css_selector("body > div:nth-child(4) > div > div > div > div > div:nth-child(10) > div.col-sm-10.col-md-11.mmih-p-horizontal_extra-small.mmih-p-vertical_extra-small > insured-lives > div > div.mmih-m-around_none.mmih-p-around_none > div > div.mmih-p-around_none.mmih-m-around_none.ng-scope.col-md-3 > div.col-md-4.mmih-p-horizontal_extra-small.ng-scope > div > div > div.col-md-1.mmih-p-around_none.mmih-m-around_none > button")
             IE.execute_script("document.querySelector('body > div:nth-child(4) > div > div > div > div > div:nth-child(10) > div.col-sm-10.col-md-11.mmih-p-horizontal_extra-small.mmih-p-vertical_extra-small > insured-lives > div > div.mmih-m-around_none.mmih-p-around_none > div > div.mmih-p-around_none.mmih-m-around_none.ng-scope.col-md-3 > div.col-md-4.mmih-p-horizontal_extra-small.ng-scope > div > div > div.col-md-1.mmih-p-around_none.mmih-m-around_none > button').click();")
-            print("Benefit one sum assured added")
             option_menu = IE.find_elements_by_tag_name('a')
             for option_menus in option_menu:
                 if str(option_menus.text) == new_benefit_1_sum_assured:
@@ -636,35 +622,29 @@ for x in range(i, j):
 
     # Setting benefit_2's DOB, Need, planned for need
     if benefit_2_indicator:
-        print()
-
         if benefit_2_PUDT_indicator:
             buttons = IE.find_elements_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[1]/benefit/div/div[1]/div/label')
             for button in buttons:
                 if button.get_attribute('for') == "benefit200" or "benefit189" or "benefit135":
                     IE.execute_script("arguments[0].click();",button)
-                    print("Add on - Death benefit selected")
 
         if benefit_2_PUDS_indicator:
             buttons = IE.find_elements_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[1]/benefit/div/div[1]/div/label')
             for button in buttons:
                 if button.get_attribute('for') == "benefit200" or "benefit189" or "benefit135":
                     IE.execute_script("arguments[0].click();", button)
-                    print("Add on - Disability benefit selected")
 
         if benefit_2_PURE_indicator:
             buttons = IE.find_elements_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[2]/benefit/div/div[1]/div/label')
             for button in buttons:
                 if button.get_attribute('for') == "benefit202" or "benefit137" or "benefit1483" or "benefit1473":
                     IE.execute_script("arguments[0].click();", button)
-                    print("Add on - Retirement benefit selected")
 
         if benefit_2_PURO_indicator:
             buttons = IE.find_elements_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[2]/benefit/div/div[1]/div/label')
             for button in buttons:
                 if button.get_attribute('for') == "benefit202" or "benefit137" or "benefit1483" or "benefit1473":
                     IE.execute_script("arguments[0].click();", button)
-                    print("Add on - Retirement benefit selected")
 
     # Setting benefit_3's DOB, Need, planned for need
     if benefit_3_indicator:
@@ -676,7 +656,6 @@ for x in range(i, j):
                 for button in buttons:
                     if button.get_attribute('for') == "benefit200" or "benefit189" or "benefit135":
                         IE.execute_script("arguments[0].click();", button)
-                        print("Add on - Death benefit selected")
 
         if benefit_3_PUDS_indicator:
             if benefit_2_PUDT_indicator:
@@ -686,21 +665,18 @@ for x in range(i, j):
                 for button in buttons:
                     if button.get_attribute('for') == "benefit200" or "benefit189" or "benefit135":
                         IE.execute_script("arguments[0].click();", button)
-                        print("Add on - Disability benefit selected")
 
         if benefit_3_PURE_indicator:
             buttons = IE.find_elements_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[2]/benefit/div/div[1]/div/label')
             for button in buttons:
                 if button.get_attribute('for') == "benefit202" or "benefit137" or "benefit1483" or "benefit1473":
                     IE.execute_script("arguments[0].click();", button)
-                    print("Add on - Retirement benefit selected")
 
         if benefit_3_PURO_indicator:
             buttons = IE.find_elements_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[2]/benefit/div/div[1]/div/label')
             for button in buttons:
                 if button.get_attribute('for') == "benefit202" or "benefit137" or "benefit1483" or "benefit1473":
                     IE.execute_script("arguments[0].click();", button)
-                    print("Add on - Retirement benefit selected")
 
     # Setting benefit_4 DOB, Need, planned for need
     if benefit_4_indicator:
@@ -712,7 +688,6 @@ for x in range(i, j):
                 for button in buttons:
                     if button.get_attribute('for') == "benefit200" or "benefit189" or "benefit135":
                         IE.execute_script("arguments[0].click();", button)
-                        print("Add on - Death benefit selected")
 
         if benefit_4_PUDS_indicator:
             if benefit_3_PUDT_indicator or benefit_2_PUDS_indicator:
@@ -722,21 +697,18 @@ for x in range(i, j):
                 for button in buttons:
                     if button.get_attribute('for') == "benefit200" or "benefit189" or "benefit135":
                         IE.execute_script("arguments[0].click();", button)
-                        print("Add on - Disability benefit selected")
 
         if benefit_4_PURE_indicator:
             buttons = IE.find_elements_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[2]/benefit/div/div[1]/div/label')
             for button in buttons:
                 if button.get_attribute('for') == "benefit202" or "benefit137" or "benefit1483" or "benefit1473":
                     IE.execute_script("arguments[0].click();", button)
-                    print("Add on - Retirement benefit selected")
 
         if benefit_4_PURO_indicator:
             buttons = IE.find_elements_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[2]/benefit/div/div[1]/div/label')
             for button in buttons:
                 if button.get_attribute('for') == "benefit202" or "benefit137" or "benefit1483" or "benefit1473":
                     IE.execute_script("arguments[0].click();", button)
-                    print("Add on - Retirement benefit selected")
 
     # Click the calculate button
     time.sleep(2)
@@ -748,172 +720,107 @@ for x in range(i, j):
 
     # A loop to ensure calculation is finished before we proceed
     while total_premium.text == "R 0":
-            time.sleep(1)
+            time.sleep(0.5)
             if total_premium.text != "R 0":
-                print()
-                print("Total Premium: " + total_premium.text)
-                time.sleep(2)
+                time.sleep(1)
 
     # Setting newbus premium for benefit One
     if benefit_1_indicator:
-        print()
-        print("Now getting benefit 1 new business premium")
-        print()
         if benefit_1_MFMM_indicator:
             web_MFMM_prem = IE.find_elements_by_xpath('/html/body/div[3]/div/div/div/div/div[5]/div[2]/insured-lives/div/div[2]/div/form/div/div[2]/div[3]')
             for element1 in web_MFMM_prem:
                 mfmm_newbus = str(element1.text)
-                print(mfmm_newbus)
                 outputworksheet.range(k, 34).value = mfmm_newbus
-                print("Done for benefit 1:")
-                print()
 
         if benefit_1_MFSP_indicator:
             web_MFSP_prem = IE.find_elements_by_xpath('/html/body/div[3]/div/div/div/div/div[7]/div[2]/insured-lives/div/div[2]/div/form/div/div[2]/div[3]')
             for element2 in web_MFSP_prem:
                 mfsp_newbus = str(element2.text)
-                print(str(element2.text))
                 outputworksheet.range(k, 34).value = mfsp_newbus
-                print("Done for benefit 1:")
-                print()
 
         if benefit_1_MFUC_indicator:
             web_MFUC_prem = IE.find_elements_by_xpath('/html/body/div[3]/div/div/div/div/div[9]/div[2]/insured-lives/div/div[2]/div/div[2]/div[3]')
             for element3 in web_MFUC_prem:
                 mfuc_newbus = str(element3.text)
-                print(mfuc_newbus)
                 outputworksheet.range(k, 34).value = mfuc_newbus
-                print("Done for benefit 1:")
-                print()
 
         if benefit_1_MFPA_indicator:
             web_MFPA_prem = IE.find_elements_by_xpath('/html/body/div[3]/div/div/div/div/div[11]/div[2]/insured-lives/div/div[2]/div/form/div/div[2]/div[3]')
             for element4 in web_MFPA_prem:
                 mfpa_newbus = str(element4.text)
-                print(mfpa_newbus)
                 outputworksheet.range(k, 34).value = mfpa_newbus
-                print("Done for benefit 1:")
-                print()
 
         if benefit_1_MFEF_indicator:
             web_MFEF_prem = IE.find_elements_by_xpath('/html/body/div[3]/div/div/div/div/div[13]/div[2]/insured-lives/div/div[2]/div/form/div/div[2]/div[3]')
             for element5 in web_MFEF_prem:
                 mfef_newbus = str(element5.text)
-                print(mfef_newbus)
                 outputworksheet.range(k, 34).value = mfef_newbus
-                print("Done for benefit 1:")
-                print()
 
     # Setting newbus premium for benefit Two
     if benefit_2_indicator:
-        print("Now getting benefit 2 new business premium")
-        print()
-
         if benefit_2_PUDT_indicator:
             web_Death_Disability_prem = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[1]/benefit/div/div[2]/div[3]/div/div[2]')
             death_disability_newbus = str(web_Death_Disability_prem.text)
-            print(death_disability_newbus)
             outputworksheet.range(k, 73).value = death_disability_newbus
-            print("Done for benefit 2:")
-            print()
 
         if benefit_2_PUDS_indicator:
             web_Death_Disability_prem = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[1]/benefit/div/div[2]/div[3]/div/div[2]')
             death_disability_newbus = str(web_Death_Disability_prem.text)
-            print(death_disability_newbus)
             outputworksheet.range(k, 112).value = death_disability_newbus
-            print("Done for benefit 2:")
-            print()
 
         if benefit_2_PURE_indicator:
             web_Retirement_prem = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[2]/benefit/div/div[1]/div/label')
             retirement_newbus = str(web_Retirement_prem.text)
-            print(retirement_newbus)
             outputworksheet.range(k, 73).value = retirement_newbus
-            print("Done for benefit 2:")
-            print()
 
         if benefit_2_PURO_indicator:
             web_Retirement_prem = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[2]/benefit/div/div[1]/div/label')
             retirement_newbus = str(web_Retirement_prem.text)
-            print(retirement_newbus)
             outputworksheet.range(k, 73).value = retirement_newbus
-            print("Done for benefit 2:")
-            print()
 
     # Setting newbus premium for benefit Three
     if benefit_3_indicator:
-        print("Now getting benefit 3 new business premium")
-        print()
-
         if benefit_3_PUDT_indicator:
             web_Death_Disability_prem = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[1]/benefit/div/div[2]/div[3]/div/div[2]')
             death_disability_newbus = str(web_Death_Disability_prem.text)
-            print(death_disability_newbus)
             outputworksheet.range(k, 112).value = death_disability_newbus
-            print("Done for benefit 3:")
-            print()
 
         if benefit_3_PUDS_indicator:
             web_Death_Disability_prem = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[1]/benefit/div/div[2]/div[3]/div/div[2]')
             death_disability_newbus = str(web_Death_Disability_prem.text)
-            print(death_disability_newbus)
             outputworksheet.range(k, 112).value = death_disability_newbus
-            print("Done for benefit 3:")
-            print()
 
         if benefit_3_PURE_indicator:
             web_Retirement_prem = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[2]/benefit/div/div[1]/div/label')
             retirement_newbus = str(web_Retirement_prem.text)
-            print(retirement_newbus)
             outputworksheet.range(k, 112).value = retirement_newbus
-            print("Done for benefit 3:")
-            print()
 
         if benefit_3_PURO_indicator:
             web_Retirement_prem = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[2]/benefit/div/div[1]/div/label')
             retirement_newbus = str(web_Retirement_prem.text)
-            print(retirement_newbus)
             outputworksheet.range(k, 112).value = retirement_newbus
-            print("Done for benefit 3:")
-            print()
 
     # Setting newbus premium for benefit Four
     if benefit_4_indicator:
-        print("Now getting benefit 4 new business premium")
-        print()
-
         if benefit_4_PUDT_indicator:
             web_Death_Disability_prem = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[1]/benefit/div/div[2]/div[3]/div/div[2]')
             death_disability_newbus = str(web_Death_Disability_prem.text)
-            print(death_disability_newbus)
             outputworksheet.range(k, 151).value = death_disability_newbus
-            print("Done for benefit 4:")
-            print()
 
         if benefit_4_PUDS_indicator:
             web_Death_Disability_prem = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[1]/benefit/div/div[2]/div[3]/div/div[2]')
             death_disability_newbus = str(web_Death_Disability_prem.text)
-            print(death_disability_newbus)
             outputworksheet.range(k, 112).value = death_disability_newbus
-            print("Done for benefit 4:")
-            print()
 
         if benefit_4_PURE_indicator:
             web_Retirement_prem = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[2]/benefit/div/div[1]/div/label')
             retirement_newbus = str(web_Retirement_prem.text)
-            print(retirement_newbus)
             outputworksheet.range(k, 151).value = retirement_newbus
-            print("Done for benefit 4:")
-            print()
 
         if benefit_4_PURO_indicator:
             web_Retirement_prem = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[15]/div[2]/div[2]/div[2]/div[2]/benefit/div/div[1]/div/label')
             retirement_newbus = str(web_Retirement_prem.text)
-            print(retirement_newbus)
             outputworksheet.range(k, 151).value = retirement_newbus
-            print("Done for benefit 4:")
-            print()
 
     outputworkbook.save()
     time.sleep(3)
@@ -948,7 +855,6 @@ for x in range(i, j):
         print("Saved...")
         time.sleep(3)
         IE.execute_script("document.querySelector('body > div:nth-child(4) > div > div > div > div > div.row.gutter.button-row.review-confirm-container > div > button.btn.btn--mmih.btn-primary--mmih.review-and-confirm-btn-default').click();")
-        print("Apply clicked...")
         WebDriverWait(IE, 60).until(EC.url_contains("https://retail-dev.metropolitan.co.za/funeral-planner/payment-details"))
 
         # click the debit order button and set the reason why
@@ -967,7 +873,6 @@ for x in range(i, j):
     policy_number = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div[1]/div/div/div/div/label')
     WebDriverWait(IE,20).until(EC.visibility_of_element_located((By.XPATH,'/html/body/div[3]/div/div/div/div[1]/div/div/div/div/label'))) # Waits until the element in 'policy number' is located and is visible
     policy_number_excel = str(policy_number.text)
-    print(policy_number_excel)
     outputworksheet.range(k, 8).value = policy_number_excel
     outputworkbook.save()
     time.sleep(2)
@@ -1509,7 +1414,6 @@ for x in range(i, j):
     pyautogui.click(x=227, y=148, clicks=1)
     time.sleep(1)
     pyautogui.click(x=782, y=507, clicks=1)
-    # path = "C:\\Users\\EcBerry\\Desktop\\Myriad info\\Metropolitain\\VP\\Funeral_Ratebook_17254v1_112018_web (2).pdf"
     # print(pyautogui.position())
 
     # click 'submit application'
