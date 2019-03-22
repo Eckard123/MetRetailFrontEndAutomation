@@ -222,9 +222,6 @@ for x in range(i, j):
     benefit_1_option = xlrd.open_workbook(excelfile_source).sheet_by_name("AS400").cell_value(rowx=i, colx=14) # This is the actual option, i.e. MFPA or MFMM etc.
     benefit_one_sum_assured = str(xlrd.open_workbook(excelfile_source).sheet_by_name('AS400').cell_value(rowx=i,colx=31)) # The actual sum assured value
     new_benefit_1_sum_assured = change_string(benefit_one_sum_assured)
-    print("First benefit: " + benefit_1_option)
-    print("First benefit sum assured:" + new_benefit_1_sum_assured)
-    print()
     benefit_1_indicator = False
     benefit_1_MFMM_indicator = False
     benefit_1_MFSP_indicator = False
