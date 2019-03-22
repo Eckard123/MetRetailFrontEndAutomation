@@ -16,7 +16,7 @@ import pyautogui
 
 
 # Setting details for the rest of operations to happen
-excelfile_source= "C:\\Users\\EcBerry\\PycharmProjects\\webAutomation\\Reports\\ExcelScenarioInfoMetRetail\\Book1.xlsm"
+excelfile_source = "C:\\Users\\EcBerry\\PycharmProjects\\webAutomation\\Reports\\ExcelScenarioInfoMetRetail\\Book1.xlsm"
 from_row = 7
 to_row = 8
 i = from_row - 1
