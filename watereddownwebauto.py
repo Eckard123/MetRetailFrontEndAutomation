@@ -36,6 +36,7 @@ def add_one_month(orig_date):
     Edited_date = orig_date.replace(day=1, month=new_month, year=new_year)
     return Edited_date.strftime("%d/%m/%Y")
 
+
 def create_dob(date, excel_age):
     dob_year = date.year
     dob_month = date.month
@@ -46,6 +47,7 @@ def create_dob(date, excel_age):
     new_year = int(dob_year - excel_age)
     created_dob = date.replace(day=new_day, month=1, year=new_year)
     return created_dob.strftime("%d/%m/%Y")
+
 
 def change_string(old_value):
     new_my_sum = old_value.replace(".0","")
@@ -167,10 +169,9 @@ for x in range(i, j):
         elif workbook_gender == "Female":
             title.select_by_index(1)
 
-    except(selenium.common.exceptions.TimeoutException,selenium.common.exceptions.NoSuchElementException):
+    except(selenium.common.exceptions.TimeoutException, selenium.common.exceptions.NoSuchElementException):
         print("Not all elements located, closing session")
         IE.quit()
-
 
     # In order to add the client once all details have been entered
     add_wait = WebDriverWait(IE,10).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[2]/div[2]/md-content/section/div/div/section/form/div/div[14]/button[1]')))
@@ -194,6 +195,7 @@ for x in range(i, j):
 
     # Click the funeral option in the circle
     WebDriverWait(IE, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="benefit_3_1"]')))
+
     @retries(max_attempts=3)
     def funeral_function():
         funerals = IE.find_elements_by_xpath('//*[@id="benefit_3_1"]')
@@ -216,7 +218,6 @@ for x in range(i, j):
     except(selenium.common.exceptions.TimeoutException):
         print("Proceeding...")
 
-
     # Setting workbook options for first benefit
     WebDriverWait(IE,60).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[3]/div/div/div/div[3]/div[2]/div[1]/table/tbody/tr/td[1]/div[2]/div/a')))
     benefit_1_option = xlrd.open_workbook(excelfile_source).sheet_by_name("AS400").cell_value(rowx=i, colx=14) # This is the actual option, i.e. MFPA or MFMM etc.
@@ -232,7 +233,6 @@ for x in range(i, j):
     benefit_1_MFUC_indicator = False
     benefit_1_MFPA_indicator = False
     benefit_1_MFEF_indicator = False
-
 
     YOB_source = int(xlrd.open_workbook(excelfile_source).sheet_by_name("AS400").cell_value(rowx=i, colx=33))
     First_benefit_DOB = create_dob(Todays_date, YOB_source)
@@ -275,7 +275,6 @@ for x in range(i, j):
         benefit_1_indicator = True
         benefit_1_MFEF_indicator = True
 
-
     # Setting workbook options for second benefit
     benefit_2_option = xlrd.open_workbook(excelfile_source).sheet_by_name("AS400").cell_value(rowx=i, colx=52)
     print("Second benefit is: " + benefit_2_option)
@@ -286,7 +285,6 @@ for x in range(i, j):
     benefit_2_PUDT_indicator = False
     benefit_2_PUDS_indicator = False
     benefit_2_PURO_indicator = False
-
 
     if benefit_2_option == "PUDT" or "PUDS" or "PURE" or "PURO":
         benefit_2_indicator = True
@@ -299,7 +297,6 @@ for x in range(i, j):
         elif benefit_2_option == "PURO":
             benefit_2_PURO_indicator = True
 
-
     #Setting workbook options for third benefit
     benefit_3_option = xlrd.open_workbook(excelfile_source).sheet_by_name("AS400").cell_value(rowx=i, colx=90)
     print("Third benefit is: " + benefit_3_option)
@@ -310,7 +307,6 @@ for x in range(i, j):
     benefit_3_PURO_indicator = False
     benefit_3_PUDT_indicator = False
     benefit_3_PUDS_indicator = False
-
 
     if benefit_3_option == "PUDT" or "PUDS" or "PURO" or "PURE":
         benefit_3_indicator = True
@@ -323,7 +319,6 @@ for x in range(i, j):
         elif benefit_3_option == "PURO":
             benefit_3_PURO_indicator = True
 
-
     # Setting workbook options for Fourth benefit
     benefit_4_option = xlrd.open_workbook(excelfile_source).sheet_by_name("AS400").cell_value(rowx=i, colx=128)
     print("Fourth benefit is: " + benefit_4_option)
@@ -335,7 +330,6 @@ for x in range(i, j):
     benefit_4_PUDT_indicator = False
     benefit_4_PUDS_indicator = False
 
-
     if benefit_4_option == "PUDT" or "PUDS" or "PURO" or "PURE":
         benefit_4_indicator = True
         if benefit_4_option == "PUDT":
@@ -346,7 +340,6 @@ for x in range(i, j):
             benefit_4_PURE_indicator = True
         elif benefit_4_option == "PURO":
             benefit_4_PURO_indicator = True
-
 
     # click the next button to add stupid details like what comes to mind first
     nextbutton = IE.find_element_by_xpath('/html/body/div[3]/div/footer/div/div/div[4]/div/button')
@@ -362,7 +355,6 @@ for x in range(i, j):
     importantneed.send_keys('Makes me happy...')
     estcost = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[6]/div[3]/input')
     mysum = str(xlrd.open_workbook(excelfile_source).sheet_by_name("Scenarios").cell_value(rowx=i, colx=13))
-    #print(mysum)
     estcost.send_keys(mysum)
     time.sleep(1)
 
@@ -400,7 +392,7 @@ for x in range(i, j):
         done_click.click()
         time.sleep(2)
 
-    except:
+    except(selenium.common.exceptions):
         print("Could not locate all elements.  You should manually continue with this scenario.")
 
     # Entering employment details
@@ -419,8 +411,7 @@ for x in range(i, j):
             workplace_textbox.send_keys(workplace_name)
             time.sleep(2)
             workplace_textbox.send_keys(Keys.ENTER)
-            #MMI_MOMENTUM_BUTTON = IE.find_element_by_tag_name('a')
-            #MMI_MOMENTUM_BUTTON.click()
+
             try:
                 WebDriverWait(IE, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR,'body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div > div.modal-body > form > div > button')))
                 find_scheme_button = IE.find_element_by_css_selector("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div > div.modal-body > form > div > button")
@@ -462,7 +453,6 @@ for x in range(i, j):
             except(selenium.common.exceptions.NoSuchElementException, selenium.common.exceptions.TimeoutException):
                 print("Could not locate element, please proceed manually")
 
-
     elif package == 809:
             workplace_name = "KFC - BALLITO"
             workplace_textbox = IE.find_element_by_xpath('//*[@id="scrollable-dropdown-menu"]/input')
@@ -486,20 +476,12 @@ for x in range(i, j):
             except(selenium.common.exceptions.NoSuchElementException, selenium.common.exceptions.TimeoutException):
                 print("Could not locate element, please proceed manually")
 
-
     elif package == 818:
             workplace_name = "SANDF - SALDANHA MILITARY ACADEMY"
             workplace_textbox = IE.find_element_by_xpath('//*[@id="scrollable-dropdown-menu"]/input')
             workplace_textbox.send_keys("SANDF - SALDANHA MILITARY ACADEMY")
             workplace_textbox.send_keys(Keys.ENTER)
             time.sleep(1)
-
-            #try:
-                #SANDF_buttons = IE.find_element_by_tag_name('a')
-                #WebDriverWait(IE,15).until(EC.element_to_be_clickable((By.TAG_NAME,'a')))
-                #SANDF_buttons.click()
-            #except(selenium.common.exceptions.NoSuchElementException, selenium.common.exceptions.TimeoutException, selenium.common.exceptions.WebDriverException):
-                #print("Could not locate element, please proceed manually")
 
             try:
                 WebDriverWait(IE, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR,'body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div > div.modal-body > form > div > button')))
@@ -509,7 +491,6 @@ for x in range(i, j):
 
             except(selenium.common.exceptions.NoSuchElementException, selenium.common.exceptions.TimeoutException):
                 print("Could not locate element, please proceed manually")
-
 
     try:
         WebDriverWait(IE,20).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[3]/div/div/div/div/div[3]/div[1]/div[2]/div/div[1]/select')))
@@ -547,12 +528,10 @@ for x in range(i, j):
         webelement_Need.clear()
         webelement_Need.send_keys(0)
         time.sleep(1)
-        #drop_menu = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[5]/div[2]/insured-lives/div/div[2]/div/form/div/div[2]/div[2]/div/div/div[2]/button')
-        #drop_menu.click()
+
     except(selenium.common.exceptions.ElementNotVisibleException, selenium.common.exceptions.TimeoutException, selenium.common.exceptions.NoSuchElementException):
         print("Default values could not be completed, please proceed manually")
         print()
-
 
     try:
         WebDriverWait(IE,20).until(EC.element_to_be_clickable((By.TAG_NAME,'a')))
@@ -563,7 +542,6 @@ for x in range(i, j):
 
     except(selenium.common.exceptions.NoSuchElementException, selenium.common.exceptions.TimeoutException):
         print("Could not locate element, please proceed manually")
-
 
     # Setting benefit_1's DOB, Need, planned for need
     if benefit_1_indicator:
@@ -580,7 +558,6 @@ for x in range(i, j):
             time.sleep(1)
             drop_menu = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div/div[5]/div[2]/insured-lives/div/div[2]/div/form/div/div[2]/div[2]/div/div/div[2]/button')
             drop_menu.click()
-            #print("Benefit one sum assured added")
             option_menu = IE.find_elements_by_tag_name('a')
             for option_menus in option_menu:
                 if str(option_menus.text) == new_benefit_1_sum_assured:
@@ -658,7 +635,6 @@ for x in range(i, j):
                 if str(option_menus.text) == new_benefit_1_sum_assured:
                     option_menus.click()
 
-
     # Setting benefit_2's DOB, Need, planned for need
     if benefit_2_indicator:
         print()
@@ -690,7 +666,6 @@ for x in range(i, j):
                 if button.get_attribute('for') == "benefit202" or "benefit137" or "benefit1483" or "benefit1473":
                     IE.execute_script("arguments[0].click();", button)
                     print("Add on - Retirement benefit selected")
-
 
     # Setting benefit_3's DOB, Need, planned for need
     if benefit_3_indicator:
@@ -727,7 +702,6 @@ for x in range(i, j):
                 if button.get_attribute('for') == "benefit202" or "benefit137" or "benefit1483" or "benefit1473":
                     IE.execute_script("arguments[0].click();", button)
                     print("Add on - Retirement benefit selected")
-
 
     # Setting benefit_4 DOB, Need, planned for need
     if benefit_4_indicator:
@@ -781,11 +755,6 @@ for x in range(i, j):
                 print("Total Premium: " + total_premium.text)
                 time.sleep(2)
 
-
-####################################################################################
-# Some more tricky stuff coming
-####################################################################################
-
     # Setting newbus premium for benefit One
     if benefit_1_indicator:
         print()
@@ -836,7 +805,6 @@ for x in range(i, j):
                 print("Done for benefit 1:")
                 print()
 
-
     # Setting newbus premium for benefit Two
     if benefit_2_indicator:
         print("Now getting benefit 2 new business premium")
@@ -874,7 +842,6 @@ for x in range(i, j):
             print("Done for benefit 2:")
             print()
 
-
     # Setting newbus premium for benefit Three
     if benefit_3_indicator:
         print("Now getting benefit 3 new business premium")
@@ -911,7 +878,6 @@ for x in range(i, j):
             outputworksheet.range(k, 112).value = retirement_newbus
             print("Done for benefit 3:")
             print()
-
 
     # Setting newbus premium for benefit Four
     if benefit_4_indicator:
@@ -953,7 +919,6 @@ for x in range(i, j):
     outputworkbook.save()
     time.sleep(3)
 
-
     # Click the next button
     next_button = IE.find_element_by_xpath('/html/body/div[3]/div/footer/div/div/div[4]/div/button/div/div')
     next_button.click()
@@ -965,7 +930,8 @@ for x in range(i, j):
         i_am_satisfied_button = IE.find_element_by_css_selector('#section_10 > div:nth-child(2) > div:nth-child(2) > div > div > div > div.col-md-10 > label')
         IE.execute_script("arguments[0].click();",i_am_satisfied_button)
         time.sleep(1)
-    except:
+
+    except(selenium.common.exceptions):
         print("Could not click radio button.  Proceed manually")
 
     try:
@@ -997,7 +963,6 @@ for x in range(i, j):
     except(selenium.common.exceptions.TimeoutException):
         print("Timeouterror, please proceed manually")
 
-
     # Setting account details for debit order and policy number
     time.sleep(1)
     policy_number = IE.find_element_by_xpath('/html/body/div[3]/div/div/div/div[1]/div/div/div/div/label')
@@ -1017,8 +982,7 @@ for x in range(i, j):
     accountnr_textbox = IE.find_element_by_xpath('//*[@id="accountNumberInput"]')
     accountnr_textbox.send_keys(accountnr)
     time.sleep(1)
-    IE.execute_script("document.querySelector('#accountTypeInput > div > button:nth-child(1)').click();")   # Pressing 'Cheque' button
-
+    IE.execute_script("document.querySelector('#accountTypeInput > div > button:nth-child(1)').click();")
 
     # Input the deduction date
     salary_day_textbox = IE.find_element_by_xpath('//*[@id="salaryDateInput"]')
@@ -1028,7 +992,6 @@ for x in range(i, j):
     # Click the next button
     next_button_2 = IE.find_element_by_xpath('/html/body/div[3]/div/footer/div/div/div[4]/div/button/div/div')
     next_button_2.click()
-
 
     # Next page, click married
     try:
@@ -1069,17 +1032,13 @@ for x in range(i, j):
         phone_web.send_keys(phone)
         time.sleep(1)
 
-    except(TimeoutError,selenium.common.exceptions.ElementNotVisibleException):
+    except(TimeoutError, selenium.common.exceptions.ElementNotVisibleException):
         print("Could not locate all elements, refreshing page")
         IE.refresh()
-
 
     # Click next button
     IE.execute_script("document.querySelector('body > div:nth-child(4) > div > footer > div > div > div:nth-child(4) > div > button > div > div').click();")
 
-
-#111111111111111111111111111111111111111111111111111111111111
-#111111111111111111111111111111111111111111111111111111111111
 
     class too_many_options:
 
@@ -1101,14 +1060,11 @@ for x in range(i, j):
         i1 = True
         info_required_one = IE.find_element_by_css_selector('#LifePartner-1 > div:nth-child(4) > div.col-md-6.mmih-p-around_none > button > span')
 
-    except:
-        print("i1 and Info 1 are false.")
-        print()
+    except(selenium.common.exceptions):
         info_required_one = None
         i1 = False
 
     if info_required_one != None and i1 == True:
-        print("First 'info required' option is visible:")
         info_buttons = IE.find_elements_by_css_selector('#LifePartner-1 > div:nth-child(4) > div.col-md-6.mmih-p-around_none > button > span')
         for too_many_options.info_button in info_buttons:
             if too_many_options.info_button.get_attribute('class') == "glyphicon glyphicon-pencil":
@@ -1143,26 +1099,20 @@ for x in range(i, j):
                 IE.execute_script("document.querySelector('body > div.modal.insured-lives.fade.ng-scope.ng-isolate-scope.in > div > div > edit-insured-life > form > div.modal-footer.mmih-color-background-catskill-white > button.btn.btn--mmih.btn-primary--mmih.right-button').click();")
                 time.sleep(2)
 
-
     # Click second info required button
     try:
         i2 = True
         info_required_two = IE.find_elements_by_css_selector('#Child-1 > div:nth-child(4) > div.col-md-6.mmih-p-around_none > button > span') or IE.find_elements_by_css_selector('#Child-2 > div:nth-child(4) > div.col-md-6.mmih-p-around_none > button > span') or IE.find_elements_by_css_selector('#Child-3 > div:nth-child(4) > div.col-md-6.mmih-p-around_none > button > span') or IE.find_elements_by_css_selector('#Child-4 > div:nth-child(4) > div.col-md-6.mmih-p-around_none > button > span')
 
-    except:
-        print("i2 and Info 2 are false")
-        print()
+    except(selenium.common.exceptions):
         i2 = False
         info_required_two = None
 
     if info_required_two != None and i2 == True:
-        print("i2 is true.  Entering info required 2.")
         info_buttons_two = info_required_two
         for too_many_options.info_button_2 in info_buttons_two:
-            print("accessing 2nd option required info")
             if i2 and i1:
-                print("i 2,1 are true.  Entering i2")
-                if too_many_options.info_button_2.__hash__() != too_many_options.info_button.__hash__():  # I am searching via hash since everything else is the same
+                if too_many_options.info_button_2.__hash__() != too_many_options.info_button.__hash__():
                     too_many_options.info_button_2.click()
                     time.sleep(2)
                     surname_web = IE.find_element_by_xpath('//*[@id="inputSurname"]')
@@ -1204,26 +1154,19 @@ for x in range(i, j):
                 IE.execute_script("document.querySelector('body > div.modal.insured-lives.fade.ng-scope.ng-isolate-scope.in > div > div > edit-insured-life > form > div.modal-footer.mmih-color-background-catskill-white > button.btn.btn--mmih.btn-primary--mmih.right-button').click();")
                 time.sleep(1)
 
-
-
     # Click third 'info required' button
     try:
         i3 = True
         info_required_three = IE.find_elements_by_css_selector('#Parent-2 > div:nth-child(4) > div.col-md-6.mmih-p-around_none > button') or IE.find_elements_by_css_selector('#Parent-3 > div:nth-child(4) > div.col-md-6.mmih-p-around_none > button') or IE.find_elements_by_css_selector('#Parent-1 > div:nth-child(4) > div.col-md-6.mmih-p-around_none > button > span')
 
-    except:
-        print("i3 and Info 3 are false.")
-        print()
+    except(selenium.common.exceptions):
         i3 = False
         info_required_three = None
 
     if info_required_three != None and i3 == True:
-        print()
-        print("Third 'info required' is visible:")
         info_buttons_three = info_required_three
         for too_many_options.info_button_3 in info_buttons_three:
             if i3 and i2 and i1:
-                print("i3, 2, 1 are true.  Entering i3")
                 if too_many_options.info_button_3.__hash__() != too_many_options.info_button.__hash__() and too_many_options.info_button_3.__hash__() != too_many_options.info_button_2.__hash__():
                     too_many_options.info_button_3.click()
 
@@ -1241,9 +1184,7 @@ for x in range(i, j):
                         IE.execute_script("document.querySelector('body > div.modal.insured-lives.fade.ng-scope.ng-isolate-scope.in > div > div > edit-insured-life > form > div.modal-footer.mmih-color-background-catskill-white > button.btn.btn--mmih.btn-primary--mmih.right-button').click();")
                         time.sleep(1)
 
-
             elif i3 and i2:
-                print("i3, 2 are true.  Entering i3")
                 if too_many_options.info_button_3.__hash__() != too_many_options.info_button_2.__hash__():
                     too_many_options.info_button_3.click()
 
@@ -1273,9 +1214,7 @@ for x in range(i, j):
                         IE.execute_script("document.querySelector('body > div.modal.insured-lives.fade.ng-scope.ng-isolate-scope.in > div > div > edit-insured-life > form > div.modal-footer.mmih-color-background-catskill-white > button.btn.btn--mmih.btn-primary--mmih.right-button').click();")
                         time.sleep(1)
 
-
             elif i3 and i1:
-                print("i3, 1 are true.  Entering i3")
                 if too_many_options.info_button_3.__hash__() != too_many_options.info_button.__hash__():
                     too_many_options.info_button_3.click()
 
@@ -1293,11 +1232,8 @@ for x in range(i, j):
                         IE.execute_script("document.querySelector('body > div.modal.insured-lives.fade.ng-scope.ng-isolate-scope.in > div > div > edit-insured-life > form > div.modal-footer.mmih-color-background-catskill-white > button.btn.btn--mmih.btn-primary--mmih.right-button').click();")
                         time.sleep(1)
 
-
             elif i3:
-                print("i3 is true.  Entering i3")
                 too_many_options.info_button_3.click()
-
                 time.sleep(2)
                 surname_web = IE.find_element_by_xpath('//*[@id="inputSurname"]')
                 surname_web.send_keys(surname_workbook)
@@ -1324,29 +1260,21 @@ for x in range(i, j):
                     IE.execute_script("document.querySelector('body > div.modal.insured-lives.fade.ng-scope.ng-isolate-scope.in > div > div > edit-insured-life > form > div.modal-footer.mmih-color-background-catskill-white > button.btn.btn--mmih.btn-primary--mmih.right-button').click();")
                     time.sleep(1)
 
-
-
     # Click fourth 'info required' button
     try:
         i4 = True
         info_required_four = IE.find_elements_by_css_selector('#ExtendedFamily-2 > div:nth-child(4) > div.col-md-6.mmih-p-around_none > button') or IE.find_elements_by_css_selector('#ExtendedFamily-3 > div:nth-child(4) > div.col-md-6.mmih-p-around_none > button > span')
 
     except:
-        print("i4 and Info 4 are false.")
-        print()
         i4 = False
         info_required_four = None
 
     if info_required_four != None and i4 == True:
-        print("Fourth 'info required' is visible:")
         info_buttons_four = info_required_four
         for too_many_options.info_button_4 in info_buttons_four:
             if i4 and i3 and i2 and i1:
-                print("i4, 3, 2, 1 are true.  Entering i4")
                 if too_many_options.info_button_4.__hash__() != too_many_options.info_button.__hash__() and too_many_options.info_button_4.__hash__() != too_many_options.info_button_2.__hash__() and too_many_options.info_button_4.__hash__() != too_many_options.info_button_3.__hash__():
-                    print("Info buttons 4, 3, 2 & 1 are visible.  Entering info button 4. ")
                     IE.execute_script("arguments[0].click();", too_many_options.info_button_4)
-
                     time.sleep(2)
                     surname_web = IE.find_element_by_xpath('//*[@id="inputSurname"]')
                     surname_web.send_keys(surname_workbook)
@@ -1365,11 +1293,8 @@ for x in range(i, j):
                 time.sleep(1)
 
             elif i4 and i3 and i2:
-                print("i4, 3, 2 are true.  Entering i4")
                 if too_many_options.info_button_4.__hash__() != too_many_options.info_button_2.__hash__() and too_many_options.info_button_4.__hash__() != too_many_options.info_button_3.__hash__():
-                    print("Info buttons 4, 3, 2 are visible.  Entering info button 4.")
                     IE.execute_script("arguments[0].click();", too_many_options.info_button_4)
-
                     time.sleep(2)
                     surname_web = IE.find_element_by_xpath('//*[@id="inputSurname"]')
                     surname_web.send_keys(surname_workbook)
@@ -1389,23 +1314,13 @@ for x in range(i, j):
                 IE.execute_script("document.querySelector('#chk_beneficiary').click();")
                 time.sleep(1)
 
-                # Setting % split
-                #percentage_split = IE.find_element_by_xpath('//*[@id="share"]')
-                #percentage_split.send_keys("100")
-                #percentage_split.send_keys(Keys.TAB)
-                time.sleep(1)
-
                 # Click 'save' button
                 IE.execute_script("document.querySelector('body > div.modal.insured-lives.fade.ng-scope.ng-isolate-scope.in > div > div > edit-insured-life > form > div.modal-footer.mmih-color-background-catskill-white > button.btn.btn--mmih.btn-primary--mmih.right-button').click();")
                 time.sleep(1)
 
-
             elif i4 and i3 and i1:
-                print("i4, 3, 1 are true.  Entering i4")
                 if too_many_options.info_button_4.__hash__() != too_many_options.info_button_3.__hash__() and too_many_options.info_button_4.__hash__() != too_many_options.info_button.__hash__():
-                    print("Info buttons 4, 3, 1 are visible.  Entering info button 4.")
                     IE.execute_script("arguments[0].click();", too_many_options.info_button_4)
-
                     time.sleep(2)
                     surname_web = IE.find_element_by_xpath('//*[@id="inputSurname"]')
                     surname_web.send_keys(surname_workbook)
@@ -1424,13 +1339,9 @@ for x in range(i, j):
                 save_button = IE.find_element_by_xpath('/html/body/div[1]/div/div/edit-insured-life/form/div[11]/button[2]')
                 save_button.click()
 
-
             elif i4 and i2 and i1:
-                print("i4, 2, 1 are true.  Entering i4")
                 if too_many_options.info_button_4.__hash__() != too_many_options.info_button_2.__hash__() and too_many_options.info_button_4.__hash__() != too_many_options.info_button.__hash__():
-                    print("Info buttons 4, 2, 1 are visible.  Entering info button 4.")
                     IE.execute_script("arguments[0].click();", too_many_options.info_button_4)
-
                     time.sleep(2)
                     surname_web = IE.find_element_by_xpath('//*[@id="inputSurname"]')
                     surname_web.send_keys(surname_workbook)
@@ -1447,14 +1358,10 @@ for x in range(i, j):
                 # Click 'save' button
                 IE.execute_script("document.querySelector('body > div.modal.insured-lives.fade.ng-scope.ng-isolate-scope.in > div > div > edit-insured-life > form > div.modal-footer.mmih-color-background-catskill-white > button.btn.btn--mmih.btn-primary--mmih.right-button').click();")
                 time.sleep(1)
-
 
             elif i4 and i1:
-                print("i4, 1 are true.  Entering i4")
                 if too_many_options.info_button_4.__hash__() != too_many_options.info_button.__hash__():
-                    print("Info buttons 4, 1 are visible.  Entering info button 4.")
                     IE.execute_script("arguments[0].click();", too_many_options.info_button_4)
-
                     time.sleep(2)
                     surname_web = IE.find_element_by_xpath('//*[@id="inputSurname"]')
                     surname_web.send_keys(surname_workbook)
@@ -1471,14 +1378,10 @@ for x in range(i, j):
                 # Click 'save' button
                 IE.execute_script("document.querySelector('body > div.modal.insured-lives.fade.ng-scope.ng-isolate-scope.in > div > div > edit-insured-life > form > div.modal-footer.mmih-color-background-catskill-white > button.btn.btn--mmih.btn-primary--mmih.right-button').click();")
                 time.sleep(1)
-
 
             elif i4 and i2:
-                print("i4 & i2 are true.  Entering i4")
                 if too_many_options.info_button_4.__hash__() != too_many_options.info_button_2.__hash__():
-                    print("Info buttons 4, 2 are visible.  Entering info button 4.")
                     IE.execute_script("arguments[0].click();", too_many_options.info_button_4)
-
                     time.sleep(2)
                     surname_web = IE.find_element_by_xpath('//*[@id="inputSurname"]')
                     surname_web.send_keys(surname_workbook)
@@ -1496,13 +1399,9 @@ for x in range(i, j):
                 IE.execute_script("document.querySelector('body > div.modal.insured-lives.fade.ng-scope.ng-isolate-scope.in > div > div > edit-insured-life > form > div.modal-footer.mmih-color-background-catskill-white > button.btn.btn--mmih.btn-primary--mmih.right-button').click();")
                 time.sleep(1)
 
-
             elif i4 and i3:
-                print("i4, 3 are true. Entering i4")
                 if too_many_options.info_button_4.__hash__() != too_many_options.info_button_3.__hash__():
-                    print("Info buttons 4, 3 are visible.  Entering info button 4.")
                     IE.execute_script("arguments[0].click();", too_many_options.info_button_4)
-
                     time.sleep(2)
                     surname_web = IE.find_element_by_xpath('//*[@id="inputSurname"]')
                     surname_web.send_keys(surname_workbook)
@@ -1521,9 +1420,7 @@ for x in range(i, j):
                 time.sleep(1)
 
             elif i4:
-                print("i4 is true. Entering i4")
                 IE.execute_script("arguments[0].click();", too_many_options.info_button_4)
-
                 time.sleep(2)
                 surname_web = IE.find_element_by_xpath('//*[@id="inputSurname"]')
                 surname_web.send_keys(surname_workbook)
@@ -1553,11 +1450,10 @@ for x in range(i, j):
             IE.execute_script("document.querySelector('body > div.modal.insured-lives.fade.ng-scope.ng-isolate-scope.in > div > div > edit-insured-life > form > div.modal-footer.mmih-color-background-catskill-white > button.btn.btn--mmih.btn-primary--mmih.right-button').click();")
             time.sleep(1)
 
-
-
     # Calling class to execute
     try:
         too_many_options()
+
     except(selenium.common.exceptions.NoSuchElementException):
         time.sleep(3)
 
@@ -1576,6 +1472,7 @@ for x in range(i, j):
     # click 'no' for marketing option one
     no = IE.find_element_by_xpath('//*[@id="section_90"]/div[2]/div[1]/div/div/div[1]/span[2]')
     no.click()
+
     # click 'no' for marketing option two
     no = IE.find_element_by_xpath('//*[@id="section_90"]/div[3]/div[1]/div/div/div[1]/span[2]')
     no.click()
@@ -1583,48 +1480,43 @@ for x in range(i, j):
     # click 'paper' option
     WebDriverWait(IE, 10).until(EC.element_to_be_clickable((By.XPATH,'/html/body/div[3]/div/div/div/div/div/div/div/div/div/div[2]/div[2]/button')))
     IE.execute_script("document.querySelector('body > div:nth-child(4) > div > div > div > div > div > div > div > div > div > div.col-md-10 > div:nth-child(6) > button').click();")
-    print("'Paper' selected...")
 
     # click 'next'
     next = IE.find_element_by_xpath('/html/body/div[3]/div/footer/div/div/div[4]/div/button')
     next.click()
-
 
     # Next page
     WebDriverWait(IE, 30).until(EC.url_contains("https://retail-dev.metropolitan.co.za/funeral-planner/advisor"))
     time.sleep(2)
 
     # click both 'yes' options for financial advisor
-    yes = IE.find_element_by_css_selector('#section_50 > div:nth-child(2) > div:nth-child(1) > div > div > div.col-md-2 > span:nth-child(1)')
-    yes.click()
-    yess = IE.find_element_by_css_selector('#section_50 > div:nth-child(3) > div:nth-child(1) > div > div > div.col-md-2 > span:nth-child(1)')
-    yess.click()
+    yes_1 = IE.find_element_by_css_selector('#section_50 > div:nth-child(2) > div:nth-child(1) > div > div > div.col-md-2 > span:nth-child(1)')
+    yes_1.click()
+    yes_2 = IE.find_element_by_css_selector('#section_50 > div:nth-child(3) > div:nth-child(1) > div > div > div.col-md-2 > span:nth-child(1)')
+    yes_2.click()
 
     # click 'next'
     nex = IE.find_element_by_css_selector('body > div:nth-child(4) > div > footer > div > div > div:nth-child(4) > div > button')
     nex.click()
-
 
     # Next page
     WebDriverWait(IE, 20).until(EC.url_contains("https://retail-dev.metropolitan.co.za/funeral-planner/finalise-application"))
     time.sleep(2)
 
     # click 'upload' button
-    # C:\Users\EcBerry\Desktop\Myriad info\Metropolitain\VP
     upload_button = IE.find_element_by_css_selector('#uploadDocBtn-0')
     upload_button.click()
     time.sleep(1)
-    pyautogui.click(x=227,y=148,clicks=1)
+    pyautogui.click(x=227, y=148, clicks=1)
     time.sleep(1)
-    pyautogui.click(x=782,y=507,clicks=1)
+    pyautogui.click(x=782, y=507, clicks=1)
     # path = "C:\\Users\\EcBerry\\Desktop\\Myriad info\\Metropolitain\\VP\\Funeral_Ratebook_17254v1_112018_web (2).pdf"
     # print(pyautogui.position())
-
 
     # click 'submit application'
     WebDriverWait(IE, 80).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'body > div:nth-child(4) > div > footer > div > div > div:nth-child(4) > div > button')))
     submit = IE.find_element_by_css_selector('body > div:nth-child(4) > div > footer > div > div > div:nth-child(4) > div > button')
-    IE.execute_script("arguments[0].click();",submit)
+    IE.execute_script("arguments[0].click();", submit)
 
     # Waiting for the 'close' button to become clickable
     WebDriverWait(IE, 300).until(EC.element_to_be_clickable((By.CSS_SELECTOR,'body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div > div > div > div > button')))
@@ -1633,3 +1525,4 @@ for x in range(i, j):
     time.sleep(2)
     IE.quit()
     time.sleep(4)
+
