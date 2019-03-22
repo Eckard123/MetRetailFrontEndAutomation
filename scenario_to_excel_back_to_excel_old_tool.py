@@ -10,6 +10,7 @@ from openpyxl.styles.colors import GREEN
 scenario_source = "C:\\Users\\EcBerry\\Desktop\\7005135.xlsx"
 old_tool = "C:\\Users\\EcBerry\\Desktop\\Myriad info\\Metropolitain\\VP\\Peter & Danelle pricing tools\\pk Alteration tool.xlsb"
 Todays_date = datetime.date.today()
+print("Gesegnet bist du, wenn andere dich schmähen und dich verfolgen und allerlei Böses gegen mich falsch machen.")
 
 
 def the_date_maker(SomeFunction):
