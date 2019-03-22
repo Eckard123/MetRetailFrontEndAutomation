@@ -9,11 +9,11 @@ from openpyxl.styles.colors import GREEN
 
 scenario_source = "C:\\Users\\EcBerry\\Desktop\\7005135.xlsx"
 old_tool = "C:\\Users\\EcBerry\\Desktop\\Myriad info\\Metropolitain\\VP\\Peter & Danelle pricing tools\\pk Alteration tool.xlsb"
-
-
 Todays_date = datetime.date.today()
 
+
 def the_date_maker(SomeFunction):
+
     def newbuss_date(SomeDate):
         newbuss_year = int(SomeDate.year - 1)
         start_date = SomeDate.replace(day=1, month=1, year=newbuss_year)
@@ -25,13 +25,11 @@ def the_date_maker(SomeFunction):
         created_dob = currentdate.replace(day=1, month=1, year=new_year)
         print(created_dob.strftime("%Y/%m/%d"))
         return created_dob.strftime("%Y/%m/%d")
-
     return create_dob
 
 @the_date_maker
 def scenario_dob(date, ageofperson):
     return scenario_dob
-
 
 
 class input:
@@ -47,6 +45,7 @@ class input:
     growth_Percentage = None
     package_code = None
     scheme_code = None
+
 
 class output:
 
@@ -165,7 +164,6 @@ class output:
     LapseRiskOnExpAfterVP_Fourth = None
 
 
-
 # Creating object to read scenario lines
 scenario_workbook = openpyxl.load_workbook(scenario_source)
 scenario_cell = scenario_workbook.active
@@ -175,7 +173,6 @@ tool_workbook = xlwings.Book(old_tool).sheets(3)
 xl_calc = xlwings.Book(old_tool)
 # Object to write values to the scenario_source workbook
 xl_write = xlwings.Book(scenario_source).sheets(1)
-
 
 
 for x in range(8, 107):
@@ -255,7 +252,6 @@ for x in range(8, 107):
     elif input.package_code == "841":
         input.scheme_code = "7005531"
 
-
     # Copying the values from the scenario sheet to the tool, used upper case 'Value' otherwise buffer error
     tool_workbook.cells(4, 3).value = input.table_code_1
     tool_workbook.cells(5, 3).value = input.table_code_2
@@ -277,9 +273,7 @@ for x in range(8, 107):
     if input.table_code_2 or input.table_code_3 or input.table_code_4 == "PURO" or "PURE":
         tool_workbook.cells(4, 15).value = "yes"
 
-
     xl_calc.app.calculation = 'automatic'
-
 
     # Giving output class variables their values, starting with the total premiums per benefit
     output.main_tot_before_VP = tool_workbook.cells(4, 17).value
@@ -317,8 +311,6 @@ for x in range(8, 107):
     else:
         output.fourth_tot_before_VP = 0
 
-
-
     # Elements for the Main benefit before VP
     output.ProfitMarginPremBeforeVP_Main = tool_workbook.cells(4, 18).value
     output.CleanRiskPremiumBeforeVP_Main = tool_workbook.cells(4, 19).value
@@ -336,8 +328,6 @@ for x in range(8, 107):
                                           output.renewalFixedPFeeBeforeVP_Main+output.claimsExpPremiumBeforeVP_Main+output.renewalVariPFeeBeforeVP_Main+
                                           output.DisribChannelSalesBeforeVP_Main+output.InterAWSaleBeforeVP_Main+output.InterUFSaleBeforeVP_Main+
                                           output.InterUFLapseBeforeVP_Main+output.LapseRiskOnExpBeforeVP_Main)
-
-
 
     # Elements for the second benefit before VP
     if input.table_code_2 == "PUDT":
@@ -357,7 +347,6 @@ for x in range(8, 107):
                                                 output.renewalFixedPFeeBeforeVP_Second+output.claimsExpPremiumBeforeVP_Second+output.renewalVariPFeeBeforeVP_Second+
                                                 output.DisribChannelSalesBeforeVP_Second+output.InterAWSaleBeforeVP_Second+output.InterUFSaleBeforeVP_Second+
                                                 output.InterUFLapseBeforeVP_Second+output.LapseRiskOnExpBeforeVP_Second)
-
 
     # Elements for the second benefit before VP
     elif input.table_code_2 == "PUDS":
@@ -431,7 +420,6 @@ for x in range(8, 107):
         output.InterUFLapseBeforeVP_Second = 0
         output.LapseRiskOnExpBeforeVP_Second = 0
 
-
     # Getting elements for benefit 3
     if input.table_code_3 == "PUDT":
         output.ProfitMarginPremBeforeVP_Third = tool_workbook.cells(4, 30).value
@@ -488,6 +476,7 @@ for x in range(8, 107):
                                                 output.renewalFixedPFeeBeforeVP_Third + output.claimsExpPremiumBeforeVP_Third + output.renewalVariPFeeBeforeVP_Third +
                                                 output.DisribChannelSalesBeforeVP_Third + output.InterAWSaleBeforeVP_Third + output.InterUFSaleBeforeVP_Third +
                                                 output.InterUFLapseBeforeVP_Third + output.LapseRiskOnExpBeforeVP_Third)
+
     elif input.table_code_3 == "PURO":
         output.ProfitMarginPremBeforeVP_Third = tool_workbook.cells(4, 54).value
         output.CleanRiskPremiumBeforeVP_Third = tool_workbook.cells(4, 55).value
@@ -519,7 +508,6 @@ for x in range(8, 107):
         output.InterUFSaleBeforeVP_Third = 0
         output.InterUFLapseBeforeVP_Third = 0
         output.LapseRiskOnExpBeforeVP_Third = 0
-
 
     # Getting elements for benefit 4
     if input.table_code_4 == "PUDT":
@@ -597,7 +585,6 @@ for x in range(8, 107):
                                                 output.DisribChannelSalesBeforeVP_Fourth + output.InterAWSaleBeforeVP_Fourth + output.InterUFSaleBeforeVP_Fourth +
                                                 output.InterUFLapseBeforeVP_Fourth + output.LapseRiskOnExpBeforeVP_Fourth)
 
-
     else:
         output.ProfitMarginPremBeforeVP_Fourth = 0
         output.CleanRiskPremiumBeforeVP_Fourth = 0
@@ -610,7 +597,6 @@ for x in range(8, 107):
         output.InterUFSaleBeforeVP_Fourth = 0
         output.InterUFLapseBeforeVP_Fourth = 0
         output.LapseRiskOnExpBeforeVP_Fourth = 0
-
 
     output.main_tot_after_VP = tool_workbook.cells(4, 346).value
 
@@ -625,7 +611,6 @@ for x in range(8, 107):
     else:
         output.second_tot_after_VP = 0
 
-
     if input.table_code_3 == "PUDT":
         output.third_tot_after_VP = tool_workbook.cells(4, 358).value
     elif input.table_code_3 == "PUDS":
@@ -637,7 +622,6 @@ for x in range(8, 107):
     else:
         output.third_tot_after_VP = 0
 
-
     if input.table_code_4 == "PUDT":
         output.fourth_tot_after_VP = tool_workbook.cells(4, 358).value
     elif input.table_code_4 == "PUDS":
@@ -648,7 +632,6 @@ for x in range(8, 107):
         output.fourth_tot_after_VP = tool_workbook.cells(4, 382).value
     else:
         output.fourth_tot_after_VP = 0
-
 
     # Elements for the Main benefit after VP
     output.ProfitMarginPremAfterVP_Main = tool_workbook.cells(4, 347).value
@@ -759,7 +742,6 @@ for x in range(8, 107):
         output.InterUFLapseAfterVP_Second = 0
         output.LapseRiskOnExpAfterVP_Second = 0
 
-
     # Getting elements after VP for the third benefit
     if input.table_code_3 == "PUDT":
         output.ProfitMarginPremAfterVP_Third = tool_workbook.cells(4, 359).value
@@ -850,7 +832,6 @@ for x in range(8, 107):
         output.InterUFLapseAfterVP_Third = 0
         output.LapseRiskOnExpAfterVP_Third = 0
 
-
     # Getting elements for fourth benefit
     if input.table_code_4 == "PUDT":
         output.ProfitMarginPremAfterVP_Fourth = tool_workbook.cells(4, 359).value
@@ -927,6 +908,7 @@ for x in range(8, 107):
                                                 output.renewalFixedPFeeAfterVP_Fourth + output.claimsExpPremiumAfterVP_Fourth + output.renewalVariPFeeAfterVP_Fourth +
                                                 output.DisribChannelSalesAfterVP_Fourth + output.InterAWSaleAfterVP_Fourth + output.InterUFSaleAfterVP_Fourth +
                                                 output.InterUFLapseAfterVP_Fourth + output.LapseRiskOnExpAfterVP_Fourth)
+
     else:
         output.ProfitMarginPremAfterVP_Fourth = 0
         output.CleanRiskPremiumAfterVP_Fourth = 0
@@ -940,9 +922,7 @@ for x in range(8, 107):
         output.InterUFLapseAfterVP_Fourth = 0
         output.LapseRiskOnExpAfterVP_Fourth = 0
 
-
     xl_calc.app.calculation = 'manual'
-
 
     # Setting total benefit premiums before and after VP
     xl_write.cells(x, 33).value = output.main_tot_before_VP
