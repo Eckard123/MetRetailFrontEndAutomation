@@ -612,11 +612,6 @@ for x in range(8, 107):
         output.LapseRiskOnExpBeforeVP_Fourth = 0
 
 
-#_________________________________Done with getting elements for new business for all benefits__________________________________________
-
-#_________________________________Now getting after VP elements for each benefit and also total prem after VP for each benefit__________
-
-
     output.main_tot_after_VP = tool_workbook.cells(4, 346).value
 
     if input.table_code_2 == "PUDT":
@@ -947,8 +942,6 @@ for x in range(8, 107):
 
 
     xl_calc.app.calculation = 'manual'
-
-#______________________________________________Copying data calculated back to the scenario sheet____________________________________________________
 
 
     # Setting total benefit premiums before and after VP
