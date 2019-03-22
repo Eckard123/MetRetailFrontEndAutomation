@@ -127,7 +127,6 @@ for x in range(i, j):
             print("Session not responding, closing session.")
             IE.quit()
 
-
     try:
         WebDriverWait(IE,20).until(EC.url_contains("https://retail-dev.metropolitan.co.za/mmih-cdi-maintain-client/client-details/personal-details"))
 
