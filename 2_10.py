@@ -1,6 +1,5 @@
 # Area of a rectangle
-# Eckard
-
+# 4117-833-5
 from math import trunc as tr
 
 length = float(input("Please enter the length of the rectangle: "))

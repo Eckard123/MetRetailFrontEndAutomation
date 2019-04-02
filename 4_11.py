@@ -1,4 +1,3 @@
-# hearttable.py
 # 4117-833-5
 from math import trunc as tr
 
